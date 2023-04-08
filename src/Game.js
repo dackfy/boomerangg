@@ -6,6 +6,7 @@ const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
 // const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
+const Boomerang = require('./game-models/Boomerang');
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
@@ -13,9 +14,10 @@ const View = require('./View');
 class Game {
   constructor({ trackLength }) {
     this.trackLength = trackLength;
-    this.hero = new Hero(); // Герою можно аргументом передать бумеранг.
-    this.enemy = new Enemy();
-    this.view = new View();
+    this.boomerang = new Boomerang(trackLength);
+    this.hero = new Hero({ position: 0, boomerang: this.boomerang });
+    this.enemy = new Enemy(trackLength);
+    this.view = new View(this);
     this.track = [];
     this.regenerateTrack();
   }
@@ -23,8 +25,12 @@ class Game {
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = (new Array(this.trackLength)).fill(' ');
+    this.track = new Array(this.trackLength).fill(' ');
     this.track[this.hero.position] = this.hero.skin;
+    this.track[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
+    if (this.hero.boomerang.position >= 0 && this.hero.boomerang.position < this.trackLength) {
+      this.track[this.hero.boomerang.position] = this.hero.boomerang.skin;
+    }
   }
 
   check() {
@@ -36,10 +42,38 @@ class Game {
   play() {
     setInterval(() => {
       // Let's play!
-      this.check();
+      this.handleCollisions();
       this.regenerateTrack();
+
+      // Добавьте логику движения врагов, например, двигаться влево
+      this.enemy.moveLeft();
+
+      // Если враг достиг края трека, перемещаем его в начало
+      if (this.enemy.position < 0) {
+        this.enemy.position = this.trackLength - 1;
+      }
+
       this.view.render(this.track);
-    });
+    }, 100); // Вы можете настроить частоту обновления игрового цикла
+  }
+
+  checkBoomerangCollision() {
+    if (this.hero.boomerang.position === this.enemy.position) {
+      this.enemy.die();
+      this.enemy = Enemy(this.trackLength); // Создаем нового врага
+    }
+  }
+
+  handleCollisions() {
+    if (this.hero.position === this.enemy.position) {
+      this.hero.die();
+    }
+
+    if (this.boomerang.position === this.enemy.position) {
+      this.enemy.die();
+      // Обнуляем позицию бумеранга после столкновения с врагом
+      this.boomerang.position = -1;
+    }
   }
 }
 
