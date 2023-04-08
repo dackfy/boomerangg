@@ -57,13 +57,6 @@ class Game {
     }, 100); // Вы можете настроить частоту обновления игрового цикла
   }
 
-  checkBoomerangCollision() {
-    if (this.hero.boomerang.position === this.enemy.position) {
-      this.enemy.die();
-      this.enemy = Enemy(this.trackLength); // Создаем нового врага
-    }
-  }
-
   handleCollisions() {
     if (this.hero.position === this.enemy.position) {
       this.hero.die();
@@ -72,7 +65,8 @@ class Game {
     if (this.boomerang.position === this.enemy.position) {
       this.enemy.die();
       // Обнуляем позицию бумеранга после столкновения с врагом
-      this.boomerang.position = -1;
+      // this.boomerang.position = -1;
+      this.enemy = new Enemy(this.trackLength); // Создаем нового врага
     }
   }
 }
