@@ -2,7 +2,7 @@
 
 class Hero {
   constructor({ position, boomerang }) {
-    this.skin = '🤠';
+    this.skin = '🤵';
     this.position = position;
     this.boomerang = boomerang;
   }
