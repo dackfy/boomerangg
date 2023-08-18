@@ -1,10 +1,18 @@
 // Наш герой.
+const player = require('play-sound')((opts = {}));
 
 class Hero {
   constructor({ position, boomerang }) {
     this.skin = '🤵';
     this.position = position;
     this.boomerang = boomerang;
+  }
+
+  playDeadSound() {
+    const newLocal = './src/sounds/dead.m4a';
+    player.play(newLocal, function (err) {
+      if (err) throw err;
+    });
   }
 
   moveLeft() {
@@ -25,9 +33,12 @@ class Hero {
 
   die() {
     this.skin = '💀';
+    this.playDeadSound();
     console.log('YOU ARE DEAD!💀');
     process.exit();
   }
 }
 
-module.exports = Hero;
+// const hero = new Hero({ position: 0, boomerang: 6 });
+// hero.die();
+ module.exports = Hero;
