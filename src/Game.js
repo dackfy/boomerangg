@@ -8,7 +8,10 @@ const Enemy = require('./game-models/Enemy');
 // const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 const Boomerang = require('./game-models/Boomerang');
+
+
 const createData = require('../createData');
+
 const player = require('play-sound')((opts = {}));
 
 // Основной класс игры.
@@ -25,6 +28,20 @@ class Game {
     this.name = '';
     this.count = 0;
     this.regenerateTrack();
+  }
+
+  playGameSound() {
+    const newLocal = './src/sounds/Voin.m4a';
+    player.play(newLocal, function (err) {
+      if (err) throw err;
+    });
+  }
+
+  playGameSong() {
+    const newLocal = './src/sounds/GameSong.m4a';
+    player.play(newLocal, function (err) {
+      if (err) throw err;
+    });
   }
 
   regenerateTrack() {
@@ -48,9 +65,15 @@ class Game {
   }
 
   play() {
+
+    this.playGameSound();
+    this.playGameSong();
+   
+
     this.name = readlineSync.question('Введите имя: ');
     process.stdin.resume();
     console.log(this.name);
+
     setInterval(() => {
       // Let's play!
       this.handleCollisions();
@@ -89,6 +112,7 @@ class Game {
       this.enemy = new Enemy(this.trackLength); // Создаем нового врага
     }
   }
+  audio.kill()
 }
 
 module.exports = Game;
