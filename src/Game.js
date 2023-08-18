@@ -1,6 +1,7 @@
 // Импортируем всё необходимое.
 // Или можно не импортировать,
 // а передавать все нужные объекты прямо из run.js при инициализации new Game().
+const readlineSync = require('readline-sync');
 
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
@@ -18,18 +19,55 @@ class Game {
     this.hero = new Hero({ position: 0, boomerang: this.boomerang });
     this.enemy = new Enemy(trackLength);
     this.view = new View(this);
-    this.track = [];
+    this.track1 = [];
+    this.track2 = [];
+    this.track3 = [];
+    this.track4 = [];
+
     this.regenerateTrack();
   }
 
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = new Array(this.trackLength).fill(' ');
-    this.track[this.hero.position] = this.hero.skin;
-    this.track[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (this.hero.boomerang.position >= 0 && this.hero.boomerang.position < this.trackLength) {
-      this.track[this.hero.boomerang.position] = this.hero.boomerang.skin;
+    this.track1 = new Array(this.trackLength).fill(' ');
+    this.track1[this.hero.position] = this.hero.skin;
+    this.track1[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
+    if (
+      this.hero.boomerang.position >= 0 &&
+      this.hero.boomerang.position < this.trackLength
+    ) {
+      this.track1[this.hero.boomerang.position] = this.hero.boomerang.skin;
+    }
+
+    this.track2 = new Array(this.trackLength).fill(' ');
+    // this.track2[this.hero.position] = this.hero.skin;
+    this.track2[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
+    if (
+      this.hero.boomerang.position >= 0 &&
+      this.hero.boomerang.position < this.trackLength
+    ) {
+      this.track2[this.hero.boomerang.position] = this.hero.boomerang.skin;
+    }
+
+    this.track3 = new Array(this.trackLength).fill(' ');
+    // this.track3[this.hero.position] = this.hero.skin;
+    this.track3[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
+    if (
+      this.hero.boomerang.position >= 0 &&
+      this.hero.boomerang.position < this.trackLength
+    ) {
+      this.track3[this.hero.boomerang.position] = this.hero.boomerang.skin;
+    }
+
+    this.track4 = new Array(this.trackLength).fill(' ');
+    // this.track4[this.hero.position] = this.hero.skin;
+    this.track4[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
+    if (
+      this.hero.boomerang.position >= 0 &&
+      this.hero.boomerang.position < this.trackLength
+    ) {
+      this.track4[this.hero.boomerang.position] = this.hero.boomerang.skin;
     }
   }
 
@@ -40,6 +78,9 @@ class Game {
   }
 
   play() {
+    const x = readlineSync.question('Введите имя: ')
+    process.stdin.resume()
+    console.log(x);
     setInterval(() => {
       // Let's play!
       this.handleCollisions();
