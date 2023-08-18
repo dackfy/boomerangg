@@ -8,7 +8,7 @@ const Enemy = require('./game-models/Enemy');
 // const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 const Boomerang = require('./game-models/Boomerang');
-const  player  =  require ( 'play-sound' ) ( opts  =  { } )
+const player = require('play-sound')((opts = {}));
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
@@ -26,6 +26,20 @@ class Game {
     this.track4 = [];
 
     this.regenerateTrack();
+  }
+
+  playGameSound() {
+    const newLocal = './src/sounds/Voin.m4a';
+    player.play(newLocal, function (err) {
+      if (err) throw err;
+    });
+  }
+
+  playGameSong() {
+    const newLocal = './src/sounds/GameSong.m4a';
+    player.play(newLocal, function (err) {
+      if (err) throw err;
+    });
   }
 
   regenerateTrack() {
@@ -79,8 +93,10 @@ class Game {
   }
 
   play() {
-    const x = readlineSync.question('Введите имя: ')
-    process.stdin.resume()
+    this.playGameSound();
+    this.playGameSong();
+    const x = readlineSync.question('Введите имя: ');
+    process.stdin.resume();
     console.log(x);
     setInterval(() => {
       // Let's play!
@@ -111,6 +127,7 @@ class Game {
       this.enemy = new Enemy(this.trackLength); // Создаем нового врага
     }
   }
+  audio.kill()
 }
 
 module.exports = Game;

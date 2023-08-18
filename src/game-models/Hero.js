@@ -3,7 +3,8 @@ const player = require('play-sound')((opts = {}));
 
 class Hero {
   constructor({ position, boomerang }) {
-    this.skin = '🤵';
+    const skin = ['🦸', '🧚', '🧝', '🧙'];
+    this.skin = skin[Math.floor(Math.random() * skin.length)];
     this.position = position;
     this.boomerang = boomerang;
   }
@@ -15,13 +16,29 @@ class Hero {
     });
   }
 
+  playLeftSound() {
+    const newLocal = './src/sounds/Left.m4a';
+    player.play(newLocal, function (err) {
+      if (err) throw err;
+    });
+  }
+
+  playRightSound() {
+    const newLocal = './src/sounds/Right.m4a';
+    player.play(newLocal, function (err) {
+      if (err) throw err;
+    });
+  }
+
   moveLeft() {
     // Идём влево.
+    this.playLeftSound();
     this.position -= 1;
   }
 
   moveRight() {
     // Идём вправо.
+    this.playRightSound();
     this.position += 1;
   }
 
@@ -41,4 +58,4 @@ class Hero {
 
 // const hero = new Hero({ position: 0, boomerang: 6 });
 // hero.die();
- module.exports = Hero;
+module.exports = Hero;
