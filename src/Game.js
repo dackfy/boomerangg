@@ -40,36 +40,6 @@ class Game {
     ) {
       this.track1[this.hero.boomerang.position] = this.hero.boomerang.skin;
     }
-
-    this.track2 = new Array(this.trackLength).fill(' ');
-    // this.track2[this.hero.position] = this.hero.skin;
-    this.track2[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (
-      this.hero.boomerang.position >= 0 &&
-      this.hero.boomerang.position < this.trackLength
-    ) {
-      this.track2[this.hero.boomerang.position] = this.hero.boomerang.skin;
-    }
-
-    this.track3 = new Array(this.trackLength).fill(' ');
-    // this.track3[this.hero.position] = this.hero.skin;
-    this.track3[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (
-      this.hero.boomerang.position >= 0 &&
-      this.hero.boomerang.position < this.trackLength
-    ) {
-      this.track3[this.hero.boomerang.position] = this.hero.boomerang.skin;
-    }
-
-    this.track4 = new Array(this.trackLength).fill(' ');
-    // this.track4[this.hero.position] = this.hero.skin;
-    this.track4[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (
-      this.hero.boomerang.position >= 0 &&
-      this.hero.boomerang.position < this.trackLength
-    ) {
-      this.track4[this.hero.boomerang.position] = this.hero.boomerang.skin;
-    }
   }
 
   check() {
@@ -79,8 +49,8 @@ class Game {
   }
 
   play() {
-    const x = readlineSync.question('Введите имя: ')
-    process.stdin.resume()
+    const x = readlineSync.question('Введите имя: ');
+    process.stdin.resume();
     console.log(x);
     setInterval(() => {
       // Let's play!

@@ -6,20 +6,15 @@ class View {
   }
 
   render() {
-    const yourTeamName = 'Elbrus';
+    const yourTeamName = 'Raccoons';
 
     // Тут всё рисуем.
     console.clear();
 
-    const res = [
-      this.game.track1.join(''),
-      this.game.track2.join(''),
-      this.game.track3.join(''),
-      this.game.track4.join(''),
-    ];
+    const res = [this.game.track1.join('')];
     console.log(res.join('\n'));
     console.log('\n\n');
-    console.log('Created by "${yourTeamName}" with love');
+    console.log(`Created by "${yourTeamName}" with love`);
   }
 }
 
