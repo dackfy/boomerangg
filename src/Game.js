@@ -112,7 +112,7 @@ class Game {
       this.enemy = new Enemy(this.trackLength); // Создаем нового врага
     }
   }
-  audio.kill()
+  // audio.kill()
 }
 
 module.exports = Game;
