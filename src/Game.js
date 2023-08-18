@@ -11,8 +11,6 @@ const Boomerang = require('./game-models/Boomerang');
 const createData = require('../createData');
 const player = require('play-sound')((opts = {}));
 
-
-
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
 
@@ -25,7 +23,7 @@ class Game {
     this.view = new View(this);
     this.track1 = [];
     this.name = '';
-
+    this.count = 0;
     this.regenerateTrack();
   }
 
@@ -52,6 +50,7 @@ class Game {
   play() {
     this.name = readlineSync.question('Введите имя: ');
     process.stdin.resume();
+    console.log(this.name);
     setInterval(() => {
       // Let's play!
       this.handleCollisions();
@@ -69,13 +68,21 @@ class Game {
     }, 100); // Вы можете настроить частоту обновления игрового цикла
   }
 
-  handleCollisions() {
+  async handleCollisions() {
     if (this.hero.position === this.enemy.position) {
-      createData(this.name)
+      await createData(this.name, this.count);
       this.hero.die();
+    }
+    if (this.hero.position < 0) {
+      this.hero.position = 0;
     }
 
     if (this.boomerang.position === this.enemy.position) {
+      this.count += 1;
+      if (this.count === 5) {
+        await createData(this.name, this.count);
+        this.hero.win()
+      }
       this.enemy.die();
       // Обнуляем позицию бумеранга после столкновения с врагом
       // this.boomerang.position = -1;

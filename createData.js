@@ -1,6 +1,7 @@
 const { Point } = require('./models');
-async function createData(hero) {
-  await Point.create({ name: hero });
+const point = require('./models/point');
+async function createData(hero, points) {
+  await Point.create({ name: hero, score: points});
 }
 
 module.exports = createData;
