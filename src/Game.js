@@ -8,7 +8,10 @@ const Enemy = require('./game-models/Enemy');
 // const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 const Boomerang = require('./game-models/Boomerang');
-const  player  =  require ( 'play-sound' ) ( opts  =  { } )
+const createData = require('../createData');
+const player = require('play-sound')((opts = {}));
+
+
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
@@ -21,9 +24,7 @@ class Game {
     this.enemy = new Enemy(trackLength);
     this.view = new View(this);
     this.track1 = [];
-    this.track2 = [];
-    this.track3 = [];
-    this.track4 = [];
+    this.name = '';
 
     this.regenerateTrack();
   }
@@ -49,9 +50,8 @@ class Game {
   }
 
   play() {
-    const x = readlineSync.question('Введите имя: ');
+    this.name = readlineSync.question('Введите имя: ');
     process.stdin.resume();
-    console.log(x);
     setInterval(() => {
       // Let's play!
       this.handleCollisions();
@@ -71,6 +71,7 @@ class Game {
 
   handleCollisions() {
     if (this.hero.position === this.enemy.position) {
+      createData(this.name)
       this.hero.die();
     }
 
