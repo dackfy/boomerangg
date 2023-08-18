@@ -8,6 +8,10 @@ const Enemy = require('./game-models/Enemy');
 // const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 const Boomerang = require('./game-models/Boomerang');
+
+
+const createData = require('../createData');
+
 const player = require('play-sound')((opts = {}));
 
 // Основной класс игры.
@@ -21,10 +25,8 @@ class Game {
     this.enemy = new Enemy(trackLength);
     this.view = new View(this);
     this.track1 = [];
-    this.track2 = [];
-    this.track3 = [];
-    this.track4 = [];
-
+    this.name = '';
+    this.count = 0;
     this.regenerateTrack();
   }
 
@@ -54,36 +56,6 @@ class Game {
     ) {
       this.track1[this.hero.boomerang.position] = this.hero.boomerang.skin;
     }
-
-    this.track2 = new Array(this.trackLength).fill(' ');
-    // this.track2[this.hero.position] = this.hero.skin;
-    this.track2[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (
-      this.hero.boomerang.position >= 0 &&
-      this.hero.boomerang.position < this.trackLength
-    ) {
-      this.track2[this.hero.boomerang.position] = this.hero.boomerang.skin;
-    }
-
-    this.track3 = new Array(this.trackLength).fill(' ');
-    // this.track3[this.hero.position] = this.hero.skin;
-    this.track3[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (
-      this.hero.boomerang.position >= 0 &&
-      this.hero.boomerang.position < this.trackLength
-    ) {
-      this.track3[this.hero.boomerang.position] = this.hero.boomerang.skin;
-    }
-
-    this.track4 = new Array(this.trackLength).fill(' ');
-    // this.track4[this.hero.position] = this.hero.skin;
-    this.track4[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (
-      this.hero.boomerang.position >= 0 &&
-      this.hero.boomerang.position < this.trackLength
-    ) {
-      this.track4[this.hero.boomerang.position] = this.hero.boomerang.skin;
-    }
   }
 
   check() {
@@ -93,11 +65,15 @@ class Game {
   }
 
   play() {
+
     this.playGameSound();
     this.playGameSong();
-    const x = readlineSync.question('Введите имя: ');
+   
+
+    this.name = readlineSync.question('Введите имя: ');
     process.stdin.resume();
-    console.log(x);
+    console.log(this.name);
+
     setInterval(() => {
       // Let's play!
       this.handleCollisions();
@@ -115,12 +91,21 @@ class Game {
     }, 100); // Вы можете настроить частоту обновления игрового цикла
   }
 
-  handleCollisions() {
+  async handleCollisions() {
     if (this.hero.position === this.enemy.position) {
+      await createData(this.name, this.count);
       this.hero.die();
+    }
+    if (this.hero.position < 0) {
+      this.hero.position = 0;
     }
 
     if (this.boomerang.position === this.enemy.position) {
+      this.count += 1;
+      if (this.count === 5) {
+        await createData(this.name, this.count);
+        this.hero.win()
+      }
       this.enemy.die();
       // Обнуляем позицию бумеранга после столкновения с врагом
       // this.boomerang.position = -1;

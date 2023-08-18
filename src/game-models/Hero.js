@@ -54,6 +54,10 @@ class Hero {
     console.log('YOU ARE DEAD!💀');
     process.exit();
   }
+  win() {
+    console.log('Побэда');
+    process.exit()
+  }
 }
 
 // const hero = new Hero({ position: 0, boomerang: 6 });
